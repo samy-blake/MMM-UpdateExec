@@ -1,6 +1,7 @@
 Module.register("MMM-UpdateExec", {
 	defaults: {
-		defaultCmd: `git pull && npm ci`,
+		preCmd: ["source ~/.bashrc"], // global
+		defaultCmd: ["git reset --hard", "git pull", "npm ci"], // in module dir
 		customExecs: {
 			// "MMM-Pir": [ // module name
 			//   "npm run update" // all commands run in there folder and its more than `git pull`
@@ -9,8 +10,11 @@ Module.register("MMM-UpdateExec", {
 	},
 
 	start() {
-		Log.info(`Starting module: ${this.name}`);
 		this.sendSocketNotification("CONFIG", this.config);
+	},
+
+	getDom: function () {
+		return document.createElement("div");
 	},
 
 	notificationReceived(notification, payload) {
